@@ -1,9 +1,4 @@
 # Vehicle-Registration-Management-System-VRMS
-Here’s a complete sample **README** for the "Vehicle Registration Management System (VRMS)" project. This README is based on the project files and typical practices for such a system:
-
-***
-
-# Vehicle Registration Management System (VRMS)
 
 ## Overview
 
@@ -96,16 +91,3 @@ Pull requests are welcome. For substantial changes, please open an issue to disc
 ## License
 
 This project is for educational purposes and has no explicit license. Please add one if you redistribute or modify.
-
-***
-
-You can adapt or expand portions based on your specific institution or deployment preferences. If the repository gains more features or documentation, consider updating this README accordingly for clarity and ease of use by future users or collaborators.[1][2][3][4]
-
-[1](https://github.com/Zaman-7/Vehicle-Registration-Management-System-VRMS-/blob/main/README.md)
-[2](https://github.com/Zaman-7/Vehicle-Registration-Management-System-VRMS-/blob/main/Main.java)
-[3](https://github.com/Zaman-7/Vehicle-Registration-Management-System-VRMS-/blob/main/database.java)
-[4](https://github.com/Zaman-7/Vehicle-Registration-Management-System-VRMS-/blob/main/registervehicle.java)
-[5](https://github.com/Zaman-7/Vehicle-Registration-Management-System-VRMS-)
-[6](https://github.com/Zaman-7/Vehicle-Registration-Management-System-VRMS-/blob/main/DeleteVehicle.java)
-[7](https://github.com/Zaman-7/Vehicle-Registration-Management-System-VRMS-/blob/main/ShowDetails.java)
-[8](https://github.com/Zaman-7/Vehicle-Registration-Management-System-VRMS-/blob/main/UpdateVehicle.java)
