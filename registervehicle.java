@@ -1,197 +1,141 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException; // ADDED import
 import com.toedter.calendar.JDateChooser;
 
 public class registervehicle extends JFrame {
+    private JTextField nameTextField, mobileTextField, addressTextField, parentageTextField, aadharNumberTextField,
+            vehicleNameTextField, vehicleMakeTextField, vehicleModelTextField, insuranceNameTextField,
+            financeDetailsTextField, engineNumberTextField, chassisNumberTextField, vehicleCapacityTextField,
+            engineCapacityTextField;
+    private JDateChooser dateChooser;
 
-    private JTextField nameTextField;
-    private JTextField mobileTextField;
-    private JTextField addressTextField;
-    private JTextField parentageTextField;
-    private JTextField aadharNumberTextField;
-    private JTextField vehicleNameTextField;
-    private JTextField vehicleMakeTextField;
-    private JTextField vehicleModelTextField;
-    private JTextField insuranceNameTextField;
-    private JTextField financeDetailsTextField;
-    private JTextField engineNumberTextField;
-    private JTextField chassisNumberTextField;
-    private JTextField vehicleCapacityTextField;
-    private JTextField engineCapacityTextField;
-
-    private Connection getConnection() {
+    private Connection getConnection() throws SQLException {
         String jdbcUrl = "jdbc:mysql://localhost:3306/VRMS_db";
         String username = "root";
-        String password = "Aleem007";
-
-        try {
-            return DriverManager.getConnection(jdbcUrl, username, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        String password = "Aleem007"; // Replace with your password
+        return DriverManager.getConnection(jdbcUrl, username, password);
     }
 
     public registervehicle() {
         setTitle("Register Your Vehicle");
-        setSize(500, 600);
+        setSize(550, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBackground(Color.WHITE);
-        mainPanel.add(formPanel, BorderLayout.CENTER);
-
-        Font fieldFont = new Font("Arial", Font.PLAIN, 16);
-
-        // Define and add all text fields to the form
-        nameTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Name:", nameTextField);
-        mobileTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Mobile:", mobileTextField);
-
-        addressTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Address:", addressTextField);
-
-        parentageTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Parentage:", parentageTextField);
-
-        aadharNumberTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Aadhar Number:", aadharNumberTextField);
-
-        vehicleNameTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Vehicle Name:", vehicleNameTextField);
-
-        vehicleMakeTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Vehicle Make:", vehicleMakeTextField);
-
-        vehicleModelTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Vehicle Model:", vehicleModelTextField);
-
-        insuranceNameTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Insurance Name:", insuranceNameTextField);
-
-        // Replace the "Registration Date" JTextField with a JDateChooser date picker
-        JDateChooser dateChooser = new JDateChooser();
-        dateChooser.setFont(fieldFont);
-        addFormField(formPanel, "Registration Date:", dateChooser);
-
-        financeDetailsTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Finance Details:", financeDetailsTextField);
-
-        engineNumberTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Engine Number:", engineNumberTextField);
-
-        chassisNumberTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Chassis Number:", chassisNumberTextField);
-
-        vehicleCapacityTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Vehicle Capacity:", vehicleCapacityTextField);
-
-        engineCapacityTextField = createTextField(20, fieldFont);
-        addFormField(formPanel, "Engine Capacity:", engineCapacityTextField);
-
-        JButton registerButton = new JButton("Register");
-        registerButton.addActionListener(e -> {
-            try {
-                Connection connection = getConnection();
-                if (connection != null) {
-                    String tableName = "vehicle_registration";
-                    String sql = "INSERT INTO " + tableName + " (name, mobile, address, parentage, aadhar_number, vehicle_name, vehicle_make, vehicle_model, insurance_name, finance_details, engine_number, chassis_number, vehicle_capacity, engine_capacity, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-                    PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-
-                    // Set the values from your text fields
-                    statement.setString(1, nameTextField.getText());
-                    statement.setString(2, mobileTextField.getText());
-                    statement.setString(3, addressTextField.getText());
-                    statement.setString(4, parentageTextField.getText());
-                    statement.setString(5, aadharNumberTextField.getText());
-                    statement.setString(6, vehicleNameTextField.getText());
-                    statement.setString(7, vehicleMakeTextField.getText());
-                    statement.setString(8, vehicleModelTextField.getText());
-                    statement.setString(9, insuranceNameTextField.getText());
-                    statement.setString(10, financeDetailsTextField.getText());
-                    statement.setString(11, engineNumberTextField.getText());
-                    statement.setString(12, chassisNumberTextField.getText());
-                    statement.setString(13, vehicleCapacityTextField.getText());
-                    statement.setString(14, engineCapacityTextField.getText());
-
-                    // Get the selected date from the JDateChooser
-                    java.util.Date selectedDate = dateChooser.getDate();
-                    if (selectedDate != null) {
-                        // Convert the selected date to a java.sql.Date
-                        java.sql.Date sqlDate = new java.sql.Date(selectedDate.getTime());
-                        statement.setDate(15, sqlDate); // Set the registration date
-                    }
-
-                    int rowsAffected = statement.executeUpdate();
-                    if (rowsAffected > 0) {
-                        JOptionPane.showMessageDialog(this, "Registration successful");
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Registration failed");
-                    }
-
-                    statement.close();
-                    connection.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        });
-// ... (rest of the code)
-
-// ... (rest of the code)
-
-
-        GridBagConstraints buttonConstraints = new GridBagConstraints();
-        buttonConstraints.gridx = 0;
-        buttonConstraints.gridy = GridBagConstraints.RELATIVE;
-        buttonConstraints.insets = new Insets(10, 0, 0, 0);
-
-        formPanel.add(registerButton, buttonConstraints);
-
-        // Add padding around the form
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.add(new JScrollPane(formPanel), BorderLayout.CENTER);
 
-        // Add the main panel to the frame
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        int gridY = 0;
+
+        // Form Fields
+        nameTextField = addFormField(formPanel, "Name:", gbc, gridY++);
+        mobileTextField = addFormField(formPanel, "Mobile:", gbc, gridY++);
+        addressTextField = addFormField(formPanel, "Address:", gbc, gridY++);
+        parentageTextField = addFormField(formPanel, "Parentage:", gbc, gridY++);
+        aadharNumberTextField = addFormField(formPanel, "Aadhar Number:", gbc, gridY++);
+        vehicleNameTextField = addFormField(formPanel, "Vehicle Name:", gbc, gridY++);
+        vehicleMakeTextField = addFormField(formPanel, "Vehicle Make:", gbc, gridY++);
+        vehicleModelTextField = addFormField(formPanel, "Vehicle Model:", gbc, gridY++);
+        insuranceNameTextField = addFormField(formPanel, "Insurance Name:", gbc, gridY++);
+        financeDetailsTextField = addFormField(formPanel, "Finance Details:", gbc, gridY++);
+        engineNumberTextField = addFormField(formPanel, "Engine Number:", gbc, gridY++);
+        chassisNumberTextField = addFormField(formPanel, "Chassis Number:", gbc, gridY++);
+        vehicleCapacityTextField = addFormField(formPanel, "Vehicle Capacity:", gbc, gridY++);
+        engineCapacityTextField = addFormField(formPanel, "Engine Capacity:", gbc, gridY++);
+
+        // Date Chooser
+        gbc.gridx = 0;
+        gbc.gridy = gridY;
+        formPanel.add(new JLabel("Registration Date:"), gbc);
+        gbc.gridx = 1;
+        dateChooser = new JDateChooser();
+        dateChooser.setFont(new Font("Arial", Font.PLAIN, 16));
+        formPanel.add(dateChooser, gbc);
+        gridY++;
+
+        // Buttons Panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton registerButton = new JButton("Register");
+        JButton backButton = new JButton("Back"); // ADDED
+        buttonPanel.add(registerButton);
+        buttonPanel.add(backButton); // ADDED
+
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
         add(mainPanel);
 
-        // Center the frame
-        setLocationRelativeTo(null);
-        registerButton.setEnabled(true); // Make sure it's enabled
+        registerButton.addActionListener(e -> registerVehicle());
 
+        // ADDED: Action listener for the Back button
+        backButton.addActionListener(e -> dispose());
     }
 
-    private JTextField createTextField(int columns, Font font) {
-        JTextField textField = new JTextField(columns);
-        textField.setFont(font);
+    private JTextField addFormField(JPanel panel, String label, GridBagConstraints gbc, int gridY) {
+        gbc.gridx = 0;
+        gbc.gridy = gridY;
+        panel.add(new JLabel(label), gbc);
+        gbc.gridx = 1;
+        JTextField textField = new JTextField(20);
+        textField.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel.add(textField, gbc);
         return textField;
     }
 
-    private void addFormField(JPanel formPanel, String labelText, JComponent component) {
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.anchor = GridBagConstraints.WEST;
-        constraints.insets = new Insets(5, 5, 5, 5);
-        constraints.gridx = 0;
-        constraints.gridy = GridBagConstraints.RELATIVE;
-        JLabel label = new JLabel(labelText);
-        formPanel.add(label, constraints);
+    private void registerVehicle() {
+        // MODIFIED: Added specific catch for duplicate entries
+        try (Connection connection = getConnection()) {
+            String sql = "INSERT INTO vehicle_registration (name, mobile, address, parentage, aadhar_number, vehicle_name, vehicle_make, vehicle_model, insurance_name, finance_details, engine_number, chassis_number, vehicle_capacity, engine_capacity, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
 
-        constraints.gridx = 1;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        formPanel.add(component, constraints);
+            statement.setString(1, nameTextField.getText());
+            statement.setString(2, mobileTextField.getText());
+            statement.setString(3, addressTextField.getText());
+            statement.setString(4, parentageTextField.getText());
+            statement.setString(5, aadharNumberTextField.getText());
+            statement.setString(6, vehicleNameTextField.getText());
+            statement.setString(7, vehicleMakeTextField.getText());
+            statement.setString(8, vehicleModelTextField.getText());
+            statement.setString(9, insuranceNameTextField.getText());
+            statement.setString(10, financeDetailsTextField.getText());
+            statement.setString(11, engineNumberTextField.getText());
+            statement.setString(12, chassisNumberTextField.getText());
+            statement.setString(13, vehicleCapacityTextField.getText());
+            statement.setString(14, engineCapacityTextField.getText());
+
+            if (dateChooser.getDate() != null) {
+                statement.setDate(15, new java.sql.Date(dateChooser.getDate().getTime()));
+            } else {
+                statement.setNull(15, java.sql.Types.DATE);
+            }
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(this, "Registration successful!");
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Registration failed.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLIntegrityConstraintViolationException e) {
+            JOptionPane.showMessageDialog(this, "A vehicle with this Chassis Number already exists.", "Duplicate Entry", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            registervehicle frame = new registervehicle();
-            frame.setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new registervehicle().setVisible(true));
     }
 }
